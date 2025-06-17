@@ -1,13 +1,83 @@
-let lastJokes = [];
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Witzebot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        #chatbox {
+            border: 1px solid #ccc;
+            padding: 10px;
+            height: 300px;
+            overflow-y: scroll;
+            background: white;
+        }
+        #userInput {
+            margin-top: 10px;
+            width: 80%;
+        }
+        #sendButton {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Witzebot 🤖</h1>
+    <div id="chatbox"></div>
+    <input type="text" id="userInput" placeholder="Frag mich nach einem Witz!" />
+    <button id="sendButton">Senden</button>
 
-function clickButton() {
-    let available = jokes.filter(j => !lastJokes.includes(j));
-    if (available.length === 0) {
-        lastJokes = [];
-        available = [...jokes];
-    }
-    const randomJoke = available[Math.floor(Math.random() * available.length)];
-    lastJokes.push(randomJoke);
-    if (lastJokes.length > 20) lastJokes.shift(); // Merke dir die letzten 20
-    document.getElementById("chatbox").innerHTML += "<div>Bot: " + randomJoke + "</div>";
-}
+    <script>
+        const jokes = [
+            "Warum können Geister so schlecht lügen? Weil man durch sie hindurchsehen kann!",
+            "Was macht ein Pirat am Computer? Er drückt die Enter-Taste!",
+            "Warum sind Mathebücher so traurig? Weil sie zu viele Probleme haben!",
+            "Wie nennt man einen Bumerang, der nicht zurückkommt? Stock!",
+            "Was ist rot und schlecht für die Zähne? Ein Ziegelstein!",
+            "Ein Astronaut programmiert eine Rakete, und das war ein großer Fehler!",
+            "Ein Frosch fliegt durch eine Bibliothek, weil es Dienstag war!",
+            "Ein Toast geht in eine Tastatur, nur um dann zu verschwinden!",
+            "Ein Roboter denkt über eine mathematische Formel, weil ihm langweilig war!",
+            "Ein Lehrer sucht ein Sandwich, denn er wollte Urlaub machen!"
+            // 👉 Hier kannst du bis zu 500+ Witze einfügen (siehe vorherige Teile)
+        ];
+
+        let lastJokes = [];
+
+        function tellJoke() {
+            let available = jokes.filter(j => !lastJokes.includes(j));
+            if (available.length === 0) {
+                lastJokes = [];
+                available = [...jokes];
+            }
+            const joke = available[Math.floor(Math.random() * available.length)];
+            lastJokes.push(joke);
+            if (lastJokes.length > 20) lastJokes.shift(); // Verhindere Wiederholungen
+            return joke;
+        }
+
+        document.getElementById("sendButton").onclick = function() {
+            const input = document.getElementById("userInput").value.toLowerCase();
+            const chatbox = document.getElementById("chatbox");
+
+            chatbox.innerHTML += `<div><strong>Du:</strong> ${input}</div>`;
+
+            if (input.includes("witz")) {
+                const joke = tellJoke();
+                chatbox.innerHTML += `<div><strong>Bot:</strong> ${joke}</div>`;
+            } else {
+                chatbox.innerHTML += `<div><strong>Bot:</strong> Frag mich nach einem Witz!</div>`;
+            }
+
+            document.getElementById("userInput").value = "";
+            chatbox.scrollTop = chatbox.scrollHeight;
+        };
+    </script>
+</body>
+</html>
