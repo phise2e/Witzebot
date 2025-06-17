@@ -129,7 +129,7 @@
             }
             const randomJoke = available[Math.floor(Math.random() * available.length)];
             lastJokes.push(randomJoke);
-            if (lastJokes.length > 5) lastJokes.shift();
+            if (lastJokes.length > 50) lastJokes.shift();
             return randomJoke;
         }
 
