@@ -15,23 +15,21 @@
             border: 1px solid #ccc;
             padding: 10px;
             height: 300px;
-            overflow-y: scroll;
+            overflow-y: auto;
             background: white;
         }
-        #userInput {
+        #jokeButton {
             margin-top: 10px;
-            width: 80%;
-        }
-        #sendButton {
-            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
     <h1>Witzebot 🤖</h1>
     <div id="chatbox"></div>
-    <input type="text" id="userInput" placeholder="Frag mich nach einem Witz!" />
-    <button id="sendButton">Senden</button>
+    <button id="jokeButton">Erzähl mir einen Witz</button>
 
     <script>
         const jokes = [
@@ -47,7 +45,7 @@
             "Warum schüttelt der Lehrer die Uhr? Weil er die Zeit nicht verlieren will!",
             "Wie kann man einen grünen Kaktus auch noch nennen? – Eine gut bewaffnete Gurke.",
             "Es wollten sich einmal 2 Zitronen miteinander treffen. Da kam die eine Zitrone nicht. Das machte die andere sauer.",
-            "Kriecht eine Schnecke einen großen Berg hoch. Da kommt ihr eine Wanderin entgegen. Sie fragt die Schnecke: Warum willst du nach oben kriechen? Die Schnecke antwortet: Ich möchte unbedingt Schnee sehen. Die Wanderin antwortet darauf: Dort oben ist aber gar kein Schnee. Daraufhin lächelt die Schnecke und sagt: Wenn ich erstmal oben bin, dann schon.",
+            "Kriecht eine Schnecke einen großen Berg hoch. Da kommt ihr eine Wanderin entgegen. Sie fragt die Schnecke: Warum willst du nach oben kriechen? Die Schnecke antwortet: Ich möchte unbedingt Schnee sehen. Die Wanderin antwortet: Dort oben ist aber gar kein Schnee. Daraufhin lächelt die Schnecke und sagt: Wenn ich erstmal oben bin, dann schon.",
             "Abonniert ArSiJa auf Youtube.",
             "Wohin fliegt eine Wolke, wenn es sie juckt? Zu einem Wolkenkratzer.",
             "Treffen sich 2 Fische im Meer. Sagt der eine: Hi, fragt der andere: Wo?",
@@ -58,36 +56,27 @@
             "Was macht ein Stück Steak unter der Couch? – Es versteakt sich.",
             "Wo ist der Mathelehrer, wenn es kalt ist? In der Ecke, denn da sind es 90 Grad.",
             "Ich habe einen Joghurt fallen gelassen. Denn er war nicht mehr haltbar."
+            "Von Silvan und PHIL!              Pädophil.            Ganz Phil Witze gibt es hier"
         ];
 
         let lastJokes = [];
 
         function tellJoke() {
-            let available = jokes.filter(j => !lastJokes.includes(j));
+            let available = jokes.filter(joke => !lastJokes.includes(joke));
             if (available.length === 0) {
                 lastJokes = [];
                 available = [...jokes];
             }
-            const joke = available[Math.floor(Math.random() * available.length)];
-            lastJokes.push(joke);
-            if (lastJokes.length > 10) lastJokes.shift(); // max. 5 letzte merken
-            return joke;
+            const randomJoke = available[Math.floor(Math.random() * available.length)];
+            lastJokes.push(randomJoke);
+            if (lastJokes.length > 10) lastJokes.shift();
+            return randomJoke;
         }
 
-        document.getElementById("sendButton").onclick = function () {
-            const input = document.getElementById("userInput").value.trim().toLowerCase();
+        document.getElementById("jokeButton").onclick = function () {
             const chatbox = document.getElementById("chatbox");
-
-            chatbox.innerHTML += `<div><strong>Du:</strong> ${input}</div>`;
-
-            if (input.includes("witz")) {
-                const joke = tellJoke();
-                chatbox.innerHTML += `<div><strong>Bot:</strong> ${joke}</div>`;
-            } else {
-                chatbox.innerHTML += `<div><strong>Bot:</strong> Frag mich nach einem Witz!</div>`;
-            }
-
-            document.getElementById("userInput").value = "";
+            const joke = tellJoke();
+            chatbox.innerHTML += `<div><strong>Bot:</strong> ${joke}</div>`;
             chatbox.scrollTop = chatbox.scrollHeight;
         };
     </script>
